@@ -2,11 +2,14 @@ import java.util.*;
 public class dingle{
     public static void main(String[] args){
         Scanner scan = new Scanner(System.in);
-        System.out.println("Please enter an integer: "); // User inputs size for square array
+        System.out.print("Please enter an integer: "); // User inputs size for square array
         int size = scan.nextInt();
 
         int[][] arr = fillSquareArray(size);
-        System.out.println("\nPrint first even number: " + returnEven(arr));
+        System.out.println("\n"+arr);
+        System.out.println("\nFirst even number: " + returnEven(arr));
+        System.out.println("First even number with neighbors sum > 17: " + returnEvenSum(arr));
+        System.out.println("First odd number with all neighbors sum > 33: " + returnOddSum(arr));
     }
 
     // Creates a square array of size x by x (user input)
@@ -15,7 +18,7 @@ public class dingle{
         int[][] arr = new int[x][x];
 
         for(int i = 0; i<arr.length; i++){
-            for(int j = 0; i<arr[i].length; j++){
+            for(int j = 0; j<arr[i].length; j++){
                 arr[i][j] = (int)(Math.random()*11)+1;
             }
         }
@@ -33,5 +36,53 @@ public class dingle{
         return 0;
     }
 
- // Finish parts 2b 2c 2d
+    // Returns first even number whose left+right neighbors sum > 17
+    public static int returnEvenSum(int[][] arr) {
+        int[][] directions = { {0, -1}, {0, 1} }; // left, right
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] % 2 != 0) continue;
+
+                int sum = 0;
+                for (int[] d : directions) {
+                    int ni = i + d[0];
+                    int nj = j + d[1];
+                    if (ni >= 0 && ni < arr.length && nj >= 0 && nj < arr[i].length) {
+                        sum += arr[ni][nj];
+                    }
+                }
+                
+                if (sum > 17) return arr[i][j];
+            }
+        }
+        return 0;
+    }
+
+    // Returns first odd number whose neighbors sum > 33
+    public static int returnOddSum(int[][] arr) {
+        int[][] directions = { {-1,0}, {1,0}, {0,-1}, {0,1} }; // up, down, left, right
+        
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                if (arr[i][j] % 2 == 0) continue; 
+                
+                int sum = 0;
+                for (int[] d : directions) {
+                    int ni = i + d[0];
+                    int nj = j + d[1];
+                    
+                    if (ni >= 0 && ni < arr.length && nj >= 0 && nj < arr[i].length) {
+                        sum += arr[ni][nj];
+                    }
+                }
+
+                if (sum > 33) return arr[i][j];
+            }
+        }
+        return 0;
+    }
+
+
+
 }
